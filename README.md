@@ -1,2 +1,2 @@
-# RingZer0CTF
-https://ringzer0ctf.com
+# RingZer0 CTFs
+My solutions for https://ringzer0ctf.com
