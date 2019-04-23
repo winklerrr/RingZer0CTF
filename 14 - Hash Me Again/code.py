@@ -1,6 +1,7 @@
 import hashlib
 import re
 import requests
+import time
 
 
 CHALLENGE = 14
@@ -14,15 +15,21 @@ LOGIN = "Website Login"
 
 
 def get_binary_message(cookie) -> str:
-    text: str = requests.get(URL, cookies=cookie).text
+    print("> Starting challenge")
+    
+    # start timer
+    global START 
+    START = time.time()
 
+    text: str = requests.get(URL, cookies=cookie).text
     if LOGIN in text:
-        print("Error: SessionID is not logged in!")
+        print("Error: PHPSESSID wrong or not logged in!")
         return None
 
     match = RE_MESSAGE.search(text)
     if match:
         message = match.group(1)
+        print(f"> Message found: {message[:50]}...")
         return message
     
     print("Error: Message can not be found!")
@@ -31,19 +38,21 @@ def get_binary_message(cookie) -> str:
 
 def get_message(binary) -> str:
     message = ""
-    binary.split()
-    for byte in [binary[step*8:step*8+8] for step in range(0, int(len(binary)/8))]:
+    for byte in [binary[step * 8: step * 8 + 8] for step in range(0, int(len(binary)/8))]:
         message += chr(int(byte, 2))
     
-    print(f"Message: {message}")
+    print(f"> Message converted: {message[:50]}...")
     return message
 
 
 def get_hash(message) -> str:
-    return hashlib.sha512(message.encode()).hexdigest()
+    hash_value = hashlib.sha512(message.encode()).hexdigest()
+    print(f"> SHA512 calculated: {hash_value}")
+    return hash_value
     
 
 def send_hash(cookie, hash_value) -> str:
+    print(f"> Sending hash (time used: {time.time() - START:.2} seconds)")
     return requests.post(f"{URL}/{hash_value}", cookies=cookie).text
 
 
@@ -75,5 +84,5 @@ def main(cookie) -> str:
 
 if __name__ == "__main__":
     print(f"** RingZer0 CTF Challenge {CHALLENGE} **")
-    cookie = input("Cookie PHPSESSID: ")
+    cookie = input("Enter Cookie PHPSESSID: ")
     main(dict(PHPSESSID=cookie))
