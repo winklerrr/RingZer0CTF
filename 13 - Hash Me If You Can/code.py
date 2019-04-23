@@ -1,6 +1,7 @@
 import hashlib
 import re
 import requests
+import time
 
 
 CHALLENGE = 13
@@ -14,25 +15,35 @@ LOGIN = "Website Login"
 
 
 def get_message(cookie) -> str:
-    text: str = requests.get(URL, cookies=cookie).text
+    print("> Starting challenge")
 
+    # start timer
+    global START 
+    START = time.time()
+
+    text: str = requests.get(URL, cookies=cookie).text
     if LOGIN in text:
-        print("Error: SessionID is not logged in!")
+        print("Error: PHPSESSID wrong or not logged in!")
         return None
 
     match = RE_MESSAGE.search(text)
     if match:
-        return match.group(1)
+        message = match.group(1)
+        print(f"> Message found: {message[:50]}...")
+        return message
     
     print("Error: Message can not be found!")
     return None
 
 
 def get_hash(message) -> str:
-    return hashlib.sha512(message.encode()).hexdigest()
+    hash_value = hashlib.sha512(message.encode()).hexdigest()
+    print(f"> Sha512 hash: {hash_value}")
+    return hash_value
     
 
 def send_hash(cookie, hash_value) -> str:
+    print(f"> Sending hash (time used: {time.time() - START:.2} seconds)")
     return requests.post(f"{URL}/{hash_value}", cookies=cookie).text
 
 
@@ -63,5 +74,5 @@ def main(cookie) -> str:
 
 if __name__ == "__main__":
     print(f"** RingZer0 CTF Challenge {CHALLENGE} **")
-    cookie = input("Cookie PHPSESSID: ")
+    cookie = input("Enter cookie PHPSESSID: ")
     main(dict(PHPSESSID=cookie))
