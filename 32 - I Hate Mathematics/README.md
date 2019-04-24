@@ -9,12 +9,12 @@ With Python 3.7:
 ```
 $ python code.py
 ** RingZer0 CTF Challenge 32 **
-Enter Cookie PHPSESSID: i5mkrrou0eker2kfv79thqrto3
+Enter Cookie PHPSESSID: [Enter your cookie id here]
 > Starting challenge
-> Equation found: 7449 + 0x1eb6 - 1100000100000
-> Equation converted: 7449 + 7862 - 6176
-> Equation solved: 9135
-> Sending hash (time used: 0.35 seconds)
+> Equation found: 348 + 0x17e8 - 1000100100110 = ?
+> Equation converted: 348 + 6120 - 4390 = ?
+> Equation solved: 348 + 6120 - 4390 = 2078
+> Sending hash (time used: 0.32 seconds)
 Success: FLAG-abcdefghijklmnopqrstuvwxyz
 ```
 
