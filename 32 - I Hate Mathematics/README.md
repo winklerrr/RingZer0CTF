@@ -9,7 +9,7 @@ With Python 3.7:
 ```
 $ python code.py
 ** RingZer0 CTF Challenge 32 **
-Enter Cookie PHPSESSID: [Enter your cookie id here]
+Enter Cookie PHPSESSID: [Your cookie session id here]
 > Starting challenge
 > Equation found: 348 + 0x17e8 - 1000100100110 = ?
 > Equation converted: 348 + 6120 - 4390 = ?
